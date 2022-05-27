@@ -1,0 +1,50 @@
+from selenium import webdriver
+import chromedriver_autoinstaller
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
+import time
+import pandas as pd
+
+options = Options()
+options.add_argument('headless');
+
+driver = webdriver.Chrome(options=options)
+
+time.sleep(3)
+
+pr_name = []
+
+for i in range(1, 11):
+
+    print('----- Start Page : {}'.format(i), '------')
+
+    driver.get('http://browse.gmarket.co.kr/list?category=300008236&f=d:f'.format(i))
+
+    time.sleep(3)
+
+    html = driver.page_source
+
+    soup = BeautifulSoup(html, 'html.parser')
+
+    names = soup.select('span.text__item')
+
+
+    for name in names:
+        pr_name.append(name.text.strip())
+    
+
+    time.sleep(3)
+
+    print('----- Finish Page : {}'.format(i), '------')
+
+driver.close()
+print('크롤링 완료')
+
+print(len(pr_name))
+
+#df = pd.DataFrame({'제품명' : pr_name})
+df=pd.DataFrame([x for x in zip(pr_name)],  columns=['제품명'])
+print(df)
