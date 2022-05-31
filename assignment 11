@@ -47,4 +47,6 @@ print(len(pr_name))
 
 #df = pd.DataFrame({'제품명' : pr_name})
 df=pd.DataFrame([x for x in zip(pr_name)],  columns=['제품명'])
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 print(df)
