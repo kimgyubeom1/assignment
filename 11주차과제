@@ -11,4 +11,9 @@ products = bestitems.select('ul > li')
 
 for idx, product in enumerate(products):
     title = product.select_one('a.itemname')
-    print(idx + 1, title.get_text(), title['href'])
+#학생2 시작
+    price = product.select_one('div.s-price > strong')
+    res_info = requests.get(title['href'])
+    soup_info = BeautifulSoup(res_info.content, 'html.parser')
+    provider_info = soup_info.select_one('div.item-topinfo_headline span.text__seller > a')
+    print(idx + 1, title.get_text(), price.get_text(), title['href'], provider_info.get_text())
